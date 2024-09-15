@@ -1,4 +1,4 @@
-import sys, os, random, re, time, glob2, argparse
+import sys, os, random, re, time, glob, argparse
 import xml.etree.ElementTree as ET
 from enum import Enum
 
@@ -139,7 +139,7 @@ def parse_odr(path, force=False):
 					otx_files = [p for p in otx_files if os.path.isfile(p)]
 
 					if len(otx_files) == 0:
-						otx_files = glob2.glob("*/" + otx_name + ".otx")
+						otx_files = glob.glob("*/" + otx_name + ".otx")
 
 					if len(otx_files) == 0:
 						print("Could not find a matching path")
@@ -322,7 +322,7 @@ args = parser.parse_args()
 # else:
 # 	odr_paths = [odr_path]
 
-odr_paths = glob2.glob(args.glob)
+odr_paths = glob.glob(args.glob)
 
 if len(odr_paths) == 0:
 	print("No files matching glob found")
