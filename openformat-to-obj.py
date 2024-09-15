@@ -83,7 +83,6 @@ def parse_odr(path, force=False):
 	filename = os.path.basename(full_path)
 	obj_path = os.path.join(dirname, name + ".obj")
 	mtl_path = os.path.join(dirname, name + ".mtl")
-	print("Full Path: " + full_path)
 
 	if ext != ".odr":
 		print("'%s' is not an ODR file" % path)
@@ -204,7 +203,6 @@ def parse_odr(path, force=False):
 
 		for mesh_path in lods[k]:
 			mesh_path = mesh_path.replace("\\", "/") if not is_windows else mesh_path
-			print("Mesh path " + mesh_path)
 			mesh_data = readfile(mesh_path)
 
 			skinned = re.findall(r"Skinned (.+)", mesh_data)[0]
@@ -300,7 +298,6 @@ def parse_odr(path, force=False):
 	os.chdir(owd)
 
 def readfile(path):
-	print("readfile paths: " + path)
 	with open(path, "r") as file:
 		return file.read()
 
@@ -328,7 +325,6 @@ args = parser.parse_args()
 # 	odr_paths = [odr_path]
 
 odr_paths = glob.glob(args.glob)
-print("ODR Paths: " + str(odr_paths))
 
 if len(odr_paths) == 0:
 	print("No files matching glob found")
