@@ -1,30 +1,95 @@
 x-common: &common
-  volumes:
-    - .:/app/script
-  working_dir: /app/script
-  command: python openformat-to-obj.py ./test_assets/*
+  working_dir: /app
+  command: |
+    python openformat-to-obj.py -f
 
 services:
-  python3.7:
+  python3.12:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: python:3.12-slim
+    volumes:
+      - ./output/python3.12:/app/output
     <<: *common
-    image: python:3.7-slim
-
-  python3.8:
-    <<: *common
-    image: python:3.8-slim
-
-  python3.9:
-    <<: *common
-    image: python:3.9-slim
-
-  python3.10:
-    <<: *common
-    image: python:3.10-slim
 
   python3.11:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: python:3.11-slim
+    volumes:
+      - ./output/python3.11:/app/output
     <<: *common
-    image: python:3.11-slim
 
-  python3.12:
+  python3.10:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: python:3.10-slim
+    volumes:
+      - ./output/python3.10:/app/output
     <<: *common
-    image: python:3.12-slim
+
+  python3.9:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: python:3.9-slim
+    volumes:
+      - ./output/python3.9:/app/output
+    <<: *common
+
+  python3.8:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: python:3.8-slim
+    volumes:
+      - ./output/python3.8:/app/output
+    <<: *common
+
+  python3.7:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: python:3.7-slim
+    volumes:
+      - ./output/python3.7:/app/output
+    <<: *common
+
+  python3.6:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: python:3.6-slim
+    volumes:
+      - ./output/python3.6:/app/output
+    <<: *common
+
+  python3.5:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: python:3.5-slim
+    volumes:
+      - ./output/python3.5:/app/output
+    <<: *common
+
+  python3.4:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: python:3.4-slim
+    volumes:
+      - ./output/python3.4:/app/output
+    <<: *common

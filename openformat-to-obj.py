@@ -80,9 +80,13 @@ def parse_odr(path, force=False):
 	full_path = os.path.normpath(os.path.realpath(path))
 	name, ext = os.path.splitext(os.path.basename(full_path))
 	dirname = os.path.dirname(full_path)
+	# Put scripts in output dir
+	output_dir = os.path.join(owd, "output")
+	os.makedirs(output_dir, exist_ok=True)
+
 	filename = os.path.basename(full_path)
-	obj_path = os.path.join(dirname, name + ".obj")
-	mtl_path = os.path.join(dirname, name + ".mtl")
+	obj_path = os.path.join(output_dir, name + ".obj")
+	mtl_path = os.path.join(output_dir, name + ".mtl")
 
 	if ext != ".odr":
 		print("'%s' is not an ODR file" % path)
