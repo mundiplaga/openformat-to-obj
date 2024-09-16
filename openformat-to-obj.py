@@ -1,12 +1,14 @@
-import sys, os, random, re, time, glob2, argparse
+import sys, os, random, re, time, glob, argparse
 import xml.etree.ElementTree as ET
 from enum import Enum
+import platform
 
 VALID_IMAGE_EXTS = [".png", ".tga", ".dds", ".jpg", ".jpeg"]
 VALID_PATH_REGEX = re.compile(r"^[\\\w\-. ]+$")
 owd = os.getcwd()
 VERSION = "0.13"
 OBJ_FIRST_LINE = "# V %s" % VERSION
+is_windows = platform.system() == 'Windows'
 
 class D3DDECLUSAGE(Enum):
 	D3DDECLUSAGE_POSITION      = 0,
@@ -75,12 +77,16 @@ def make_path_unique(path):
 def parse_odr(path, force=False):
 
 	os.chdir(owd)
-	full_path = os.path.realpath(path)
+	full_path = os.path.normpath(os.path.realpath(path))
 	name, ext = os.path.splitext(os.path.basename(full_path))
 	dirname = os.path.dirname(full_path)
+	# Put scripts in output dir
+	output_dir = os.path.join(owd, "output")
+	os.makedirs(output_dir, exist_ok=True)
+
 	filename = os.path.basename(full_path)
-	obj_path = name+".obj"
-	mtl_path = name+".mtl"
+	obj_path = os.path.join(output_dir, name + ".obj")
+	mtl_path = os.path.join(output_dir, name + ".mtl")
 
 	if ext != ".odr":
 		print("'%s' is not an ODR file" % path)
@@ -139,7 +145,7 @@ def parse_odr(path, force=False):
 					otx_files = [p for p in otx_files if os.path.isfile(p)]
 
 					if len(otx_files) == 0:
-						otx_files = glob2.glob("*/" + otx_name + ".otx")
+						otx_files = glob.glob("*/" + otx_name + ".otx")
 
 					if len(otx_files) == 0:
 						print("Could not find a matching path")
@@ -200,7 +206,7 @@ def parse_odr(path, force=False):
 		lods[k] = [s for s in lods[k] if s != ""]
 
 		for mesh_path in lods[k]:
-
+			mesh_path = mesh_path.replace("\\", "/") if not is_windows else mesh_path
 			mesh_data = readfile(mesh_path)
 
 			skinned = re.findall(r"Skinned (.+)", mesh_data)[0]
@@ -322,7 +328,7 @@ args = parser.parse_args()
 # else:
 # 	odr_paths = [odr_path]
 
-odr_paths = glob2.glob(args.glob)
+odr_paths = glob.glob(args.glob)
 
 if len(odr_paths) == 0:
 	print("No files matching glob found")
